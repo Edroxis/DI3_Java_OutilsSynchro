@@ -83,8 +83,34 @@ public class ExampleAlgorithm implements Algorithm {
 						notBestSol = true;
 					}
 				}
+			for(i = 0; i < solution.size(); i++)
+				for(j = i + 1; j < solution.size(); j++)	//Look for best solution
+				{
+					testedSol = solution.clone();
+					testedSol.relocate(i, j);
+					testedSol.setOF(costCalc.calcOF(testedSol));
+					if(testedSol.getOF() < solution.getOF())
+					{
+						solution = testedSol;
+						notBestSol = true;
+					}
+				}
 		}
 		
+		return solution;
+	}
+	
+	public Solution relocateAlgorithm(Solution solution){
+		int i, j;
+		boolean notBestSol = true;
+		Solution testedSol;
+		TSPCostCalculator costCalc = new TSPCostCalculator();
+
+		while(notBestSol)
+		{
+			notBestSol = false;
+			
+		}
 		return solution;
 	}
 
