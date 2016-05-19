@@ -48,7 +48,7 @@ public class ExampleAlgorithm implements Algorithm {
 		while((System.currentTimeMillis()-startTime)/1_000<=max_cpu){	
 			Collections.shuffle(s,rnd);
 			
-			s = swapAlgorithm(s);
+			s = myAlgorithm(s);
 			
 			//set the objective function of the solution
 			s.setOF(costCalc.calcOF(s));
@@ -62,7 +62,7 @@ public class ExampleAlgorithm implements Algorithm {
 		return best;
 	}
 	
-	public Solution swapAlgorithm(Solution solution){
+	public Solution myAlgorithm(Solution solution){
 		int i, j;
 		boolean notBestSol = true;
 		Solution testedSol;
@@ -71,18 +71,7 @@ public class ExampleAlgorithm implements Algorithm {
 		while(notBestSol)
 		{
 			notBestSol = false;
-			for(i = 0; i < solution.size(); i++)
-				for(j = i + 1; j < solution.size(); j++)	//Look for best solution
-				{
-					testedSol = solution.clone();
-					testedSol.swap(i, j);
-					testedSol.setOF(costCalc.calcOF(testedSol));
-					if(testedSol.getOF() < solution.getOF())
-					{
-						solution = testedSol;
-						notBestSol = true;
-					}
-				}
+			
 			for(i = 0; i < solution.size(); i++)
 				for(j = i + 1; j < solution.size(); j++)	//Look for best solution
 				{
@@ -95,23 +84,22 @@ public class ExampleAlgorithm implements Algorithm {
 						notBestSol = true;
 					}
 				}
+			
+			/*for(i = 0; i < solution.size(); i++)
+				for(j = i + 1; j < solution.size(); j++)	//Look for best solution
+				{
+					testedSol = solution.clone();
+					testedSol.swap(i, j);
+					testedSol.setOF(costCalc.calcOF(testedSol));
+					if(testedSol.getOF() < solution.getOF())
+					{
+						solution = testedSol;
+						notBestSol = true;
+					}
+				}*/
 		}
-		
+
 		return solution;
 	}
 	
-	public Solution relocateAlgorithm(Solution solution){
-		int i, j;
-		boolean notBestSol = true;
-		Solution testedSol;
-		TSPCostCalculator costCalc = new TSPCostCalculator();
-
-		while(notBestSol)
-		{
-			notBestSol = false;
-			
-		}
-		return solution;
-	}
-
 }
