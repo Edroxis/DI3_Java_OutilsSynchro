@@ -72,7 +72,7 @@ public class ExampleAlgorithm implements Algorithm {
 		{
 			notBestSol = false;
 			for(i = 0; i < solution.size(); i++)
-				for(j = i + 1; j < solution.size(); j++)
+				for(j = i + 1; j < solution.size(); j++)	//Look for best solution
 				{
 					testedSol = solution.clone();
 					testedSol.swap(i, j);
