@@ -85,7 +85,7 @@ public class ExampleAlgorithm implements Algorithm {
 					}
 				}
 			
-			/*for(i = 0; i < solution.size(); i++)
+			for(i = 0; i < solution.size(); i++)
 				for(j = i + 1; j < solution.size(); j++)	//Look for best solution
 				{
 					testedSol = solution.clone();
@@ -96,7 +96,7 @@ public class ExampleAlgorithm implements Algorithm {
 						solution = testedSol;
 						notBestSol = true;
 					}
-				}*/
+				}
 		}
 
 		return solution;
