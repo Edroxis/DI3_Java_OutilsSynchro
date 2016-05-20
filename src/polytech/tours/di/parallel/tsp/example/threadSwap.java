@@ -21,12 +21,23 @@ public class threadSwap implements Callable<Solution> {
 		return solution;
 	}
 	
+	class SetForSwap{
+		int i, j;
+		double cost;
+		SetForSwap(int i, int j, double cost){
+			this.i = i;
+			this.j = j;
+			this.cost = cost;
+		}
+	}
+	
 	public Solution myAlgorithm(Solution solution){
 		int i, j;
 		boolean notBestSol = true;
 		Solution testedSol;
 		TSPCostCalculator costCalc = new TSPCostCalculator();
 		solution.setOF(costCalc.calcOF(solution));
+		
 
 		while(notBestSol)
 		{
@@ -35,21 +46,21 @@ public class threadSwap implements Callable<Solution> {
 			for(i = 0; i < solution.size(); i++)
 				for(j = i + 1; j < solution.size(); j++)	//Look for best solution
 				{
-					testedSol = solution.clone();
+					/*testedSol = solution.clone();
 					testedSol.swap(i, j);
 					testedSol.setOF(costCalc.calcOF(testedSol));
 					if(testedSol.getOF() < solution.getOF())
 					{
 						solution = testedSol;
 						notBestSol = true;
-					}
+					}*/
 					
-					/*if(costCalc.interestingSwap(solution, i, j))
+					if(costCalc.interestingSwap(solution, i, j))
 					{
 						solution.swap(i, j);
 						solution.setOF(costCalc.calcOF(solution));
 						notBestSol = true;
-					}*/
+					}
 					//TODO swap à la fin
 				}
 		}

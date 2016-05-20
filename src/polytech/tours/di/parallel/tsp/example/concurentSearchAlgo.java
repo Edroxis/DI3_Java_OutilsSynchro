@@ -36,6 +36,8 @@ public class concurentSearchAlgo implements Algorithm {
 		Random rnd=new Random(Long.valueOf(config.getProperty("seed")));
 		Solution s=new Solution();
 		Solution best=null;
+		//set nb of threads
+		int nbThreads = 64;
 		
 		int calculationCounter = 0;
 		
@@ -47,52 +49,43 @@ public class concurentSearchAlgo implements Algorithm {
 			s.add(i);
 		}
 		while((System.currentTimeMillis()-startTime)/1_000<=max_cpu){	
-			ArrayList<Future<Solution>> solList = new ArrayList<Future<Solution>>();
+			ArrayList<Future<Solution>> futureSolList = new ArrayList<Future<Solution>>();
 			ArrayList<threadSwap> threadList = new ArrayList<threadSwap>();
-			ArrayList<TSPCostCalculator> costCalcList = new ArrayList<TSPCostCalculator>();
+			ArrayList<Solution> solList = new ArrayList<Solution>();
 			ExecutorService execute = Executors.newSingleThreadExecutor();
 			
-			for(int i = 0; i<8; i++)
+			for(int i = 0; i<nbThreads; i++)
 			{
 				Collections.shuffle(s,rnd);
 				threadList.add(new threadSwap(s.clone()));
-				solList.add(execute.submit(threadList.get(i)));	
-				costCalcList.add(new TSPCostCalculator());
-				calculationCounter++;
+				futureSolList.add(execute.submit(threadList.get(i)));	
 			}
 			
-			for(int i = 0; i<8; i++)
+			for(int i = 0; i<nbThreads; i++)
 			{
 				Solution temp = null;
 				try {
-					temp = solList.get(i).get(max_cpu - (System.currentTimeMillis()-startTime)/1_000, TimeUnit.MILLISECONDS);
+					temp = futureSolList.get(i).get(max_cpu - (System.currentTimeMillis()-startTime)/1_000, TimeUnit.SECONDS);
 				} catch (InterruptedException | ExecutionException e) {
 					e.printStackTrace();
 				}catch (TimeoutException e) {
 					System.out.println("Not enough time to finish this one!");
 				}
-				//temp.setOF(costCalcList.get(i).calcOF(temp));
-				//System.out.println(temp);
-
-			}
-			
-			//set the objective function of the solution
-			
-			try {
-				best=solList.get(0).get();
-			} catch (InterruptedException | ExecutionException e1) {
-				e1.printStackTrace();
-			}
-			
-			for(int i = 0; i<7; i++)
-			{
-				try {
-					if(solList.get(i).get().getOF() < best.getOF())
-						best=solList.get(i).get();
-				} catch (InterruptedException | ExecutionException e) {
-					e.printStackTrace();
+				if(temp!=null)
+				{
+					solList.add(temp);
+					System.out.println(temp);
+					calculationCounter++;
 				}
 			}
+			
+			if(best == null)
+				best=solList.get(0);
+			
+			for(Solution sol : solList)
+				if(sol.getOF() < best.getOF())
+					best=sol;
+			
 			execute.shutdownNow();
 		}
 		System.out.println("Number of Calculation :"+calculationCounter);
