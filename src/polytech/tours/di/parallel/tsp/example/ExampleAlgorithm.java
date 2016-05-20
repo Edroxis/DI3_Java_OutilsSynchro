@@ -36,20 +36,20 @@ public class ExampleAlgorithm implements Algorithm {
 		Random rnd=new Random(Long.valueOf(config.getProperty("seed")));
 		Solution s=new Solution();
 		Solution best=null;
-		
+
 		//set distance Matrix in TSPCostCalculator
 		TSPCostCalculator.setMatrix(instance.getDistanceMatrix());
 		TSPCostCalculator costCalc = new TSPCostCalculator();
-		
+
 		long startTime=System.currentTimeMillis();
 		for(int i=0; i<instance.getN(); i++){
 			s.add(i);
 		}
 		while((System.currentTimeMillis()-startTime)/1_000<=max_cpu){	
 			Collections.shuffle(s,rnd);
-			
+
 			s = myAlgorithm(s);
-			
+
 			//set the objective function of the solution
 			s.setOF(costCalc.calcOF(s));
 			System.out.println(s);
@@ -61,7 +61,7 @@ public class ExampleAlgorithm implements Algorithm {
 		//return the solution
 		return best;
 	}
-	
+
 	public Solution myAlgorithm(Solution solution){
 		int i, j;
 		boolean notBestSol = true;
@@ -71,7 +71,7 @@ public class ExampleAlgorithm implements Algorithm {
 		while(notBestSol)
 		{
 			notBestSol = false;
-			
+
 			for(i = 0; i < solution.size(); i++)
 				for(j = i + 1; j < solution.size(); j++)	//Look for best solution
 				{
@@ -90,7 +90,7 @@ public class ExampleAlgorithm implements Algorithm {
 						notBestSol = true;
 					}*/
 				}
-			
+
 			for(i = 0; i < solution.size(); i++)
 				for(j = i + 1; j < solution.size(); j++)	//Look for best solution
 				{
@@ -107,5 +107,5 @@ public class ExampleAlgorithm implements Algorithm {
 
 		return solution;
 	}
-	
+
 }
