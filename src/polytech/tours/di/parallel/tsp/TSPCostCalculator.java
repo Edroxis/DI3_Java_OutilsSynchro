@@ -41,6 +41,23 @@ public class TSPCostCalculator{
 		this.s=s;
 		return calc();
 	}
+	
+	public boolean interestingSwap(Solution s, int i, int j){
+ 		double partialCostDiff = 0;
+		int downI = i-1, upI = i+1, downJ = j-1, upJ = j+1;
+		
+		if(downI<0)
+			downI = s.size()-1;
+		
+		if(upJ == s.size())
+			upJ = 0;
+		
+		partialCostDiff += distMatrix[s.get(downI)][s.get(i)] + distMatrix[s.get(i)][s.get(upI)] + distMatrix[s.get(downJ)][s.get(j)] + distMatrix[s.get(j)][s.get(upJ)] -
+				( distMatrix[s.get(downI)][s.get(j)] + distMatrix[s.get(j)][s.get(upI)] + distMatrix[s.get(downJ)][s.get(i)] + distMatrix[s.get(i)][s.get(upJ)]);
+		
+		return  partialCostDiff < 0;
+	}
+	
 	/**
 	 * internal implementation of the calculator
 	 * @return the cost of a TSP solution

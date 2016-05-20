@@ -76,20 +76,26 @@ public class ExampleAlgorithm implements Algorithm {
 				for(j = i + 1; j < solution.size(); j++)	//Look for best solution
 				{
 					testedSol = solution.clone();
-					testedSol.relocate(i, j);
+					testedSol.swap(i, j);
 					testedSol.setOF(costCalc.calcOF(testedSol));
 					if(testedSol.getOF() < solution.getOF())
 					{
 						solution = testedSol;
 						notBestSol = true;
 					}
+					/*if(costCalc.interestingSwap(solution, i, j))
+					{
+						solution.swap(i, j);
+						solution.setOF(costCalc.calcOF(solution));
+						notBestSol = true;
+					}*/
 				}
 			
 			for(i = 0; i < solution.size(); i++)
 				for(j = i + 1; j < solution.size(); j++)	//Look for best solution
 				{
 					testedSol = solution.clone();
-					testedSol.swap(i, j);
+					testedSol.relocate(i, j);
 					testedSol.setOF(costCalc.calcOF(testedSol));
 					if(testedSol.getOF() < solution.getOF())
 					{
