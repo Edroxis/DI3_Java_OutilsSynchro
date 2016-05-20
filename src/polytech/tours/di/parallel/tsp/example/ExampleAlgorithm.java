@@ -36,7 +36,9 @@ public class ExampleAlgorithm implements Algorithm {
 		Random rnd=new Random(Long.valueOf(config.getProperty("seed")));
 		Solution s=new Solution();
 		Solution best=null;
-
+		
+		int calculationCounter = 0;
+		
 		//set distance Matrix in TSPCostCalculator
 		TSPCostCalculator.setMatrix(instance.getDistanceMatrix());
 		TSPCostCalculator costCalc = new TSPCostCalculator();
@@ -57,12 +59,15 @@ public class ExampleAlgorithm implements Algorithm {
 				best=s.clone();
 			else if(s.getOF()<best.getOF())
 				best=s.clone();
+			calculationCounter++;
 		}
+		System.out.println("Number of Calculation :"+calculationCounter);
 		//return the solution
 		return best;
 	}
 
-	public Solution myAlgorithm(Solution solution){
+
+	static public Solution myAlgorithm(Solution solution){
 		int i, j;
 		boolean notBestSol = true;
 		Solution testedSol;
@@ -83,25 +88,13 @@ public class ExampleAlgorithm implements Algorithm {
 						solution = testedSol;
 						notBestSol = true;
 					}
+					
 					/*if(costCalc.interestingSwap(solution, i, j))
 					{
 						solution.swap(i, j);
 						solution.setOF(costCalc.calcOF(solution));
 						notBestSol = true;
 					}*/
-				}
-
-			for(i = 0; i < solution.size(); i++)
-				for(j = i + 1; j < solution.size(); j++)	//Look for best solution
-				{
-					testedSol = solution.clone();
-					testedSol.relocate(i, j);
-					testedSol.setOF(costCalc.calcOF(testedSol));
-					if(testedSol.getOF() < solution.getOF())
-					{
-						solution = testedSol;
-						notBestSol = true;
-					}
 				}
 		}
 

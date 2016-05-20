@@ -58,7 +58,10 @@ public class TSPCostCalculator{
 		if(upJ == s.size())
 			upJ = 0;
 
-		partialCostDiff += distMatrix[s.get(downI)][s.get(i)] + distMatrix[s.get(i)][s.get(upI)] + distMatrix[s.get(downJ)][s.get(j)] + distMatrix[s.get(j)][s.get(upJ)] -
+		if(j == i+1)
+			partialCostDiff = distMatrix[s.get(downI)][s.get(i)] + distMatrix[s.get(j)][s.get(upJ)] - (distMatrix[s.get(downI)][s.get(j)] + distMatrix[s.get(i)][s.get(upJ)]);
+		else
+			partialCostDiff = distMatrix[s.get(downI)][s.get(i)] + distMatrix[s.get(i)][s.get(upI)] + distMatrix[s.get(downJ)][s.get(j)] + distMatrix[s.get(j)][s.get(upJ)] -
 				( distMatrix[s.get(downI)][s.get(j)] + distMatrix[s.get(j)][s.get(upI)] + distMatrix[s.get(downJ)][s.get(i)] + distMatrix[s.get(i)][s.get(upJ)]);
 
 		return  partialCostDiff < 0;
