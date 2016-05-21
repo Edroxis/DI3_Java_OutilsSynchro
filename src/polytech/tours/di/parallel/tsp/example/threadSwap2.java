@@ -1,46 +1,32 @@
 package polytech.tours.di.parallel.tsp.example;
 
-import java.util.concurrent.Callable;
-
 import polytech.tours.di.parallel.tsp.Solution;
 import polytech.tours.di.parallel.tsp.TSPCostCalculator;
 
-public class threadSwap implements Callable<Solution> {
+public class threadSwap2 implements Runnable{
 
-	private Solution solution;
+	Solution sol;
+	private boolean finished;
+	private long timeout;
 	
-	public threadSwap(Solution sol){
-		this.solution = sol;
+	threadSwap2(Solution s, long timeout){
+		this.sol = s;
+		finished = false;
+		this.timeout = timeout;	//TODO gérer timeout
 	}
 	
 	@Override
-	public Solution call() throws Exception {
-		
-		solution = myAlgorithm(solution);
-		
-		return solution;
+	public void run() {
+		sol = myAlgorithm(sol);
+		finished = true;
+	}
+	public boolean isFinished(){
+		return finished;
 	}
 	
-	/*class SetForSwap{
-		int i, j;
-		double cost;
-		SetForSwap(int i, int j, double cost){
-			this.i = i;
-			this.j = j;
-			this.cost = cost;
-		}
-		boolean better(int i, int j, double cost)
-		{
-			if(this.cost < cost)
-			{
-				this.i = i;
-				this.j = j;
-				this.cost = cost;
-				return true;
-			}
-			return false;
-		}
-	}*/
+	public Solution getSol(){
+		return sol;
+	}
 	
 	public Solution myAlgorithm(Solution solution){
 		int i, j;
@@ -65,7 +51,8 @@ public class threadSwap implements Callable<Solution> {
 						solution = testedSol;
 						notBestSol = true;
 					}
-					
+					if(timeout - System.currentTimeMillis() < 0)
+						return solution;
 					/*if(costCalc.interestingSwap(solution, i, j))
 					{
 						solution.swap(i, j);
@@ -75,7 +62,7 @@ public class threadSwap implements Callable<Solution> {
 					//TODO swap à la fin
 				}
 		}
-		//System.out.println(solution);
+		System.out.println(solution);
 		return solution;
 	}
 
