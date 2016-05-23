@@ -36,69 +36,22 @@ public class ExampleAlgorithm implements Algorithm {
 		Random rnd=new Random(Long.valueOf(config.getProperty("seed")));
 		Solution s=new Solution();
 		Solution best=null;
-		
-		int calculationCounter = 0;
-		
-		//set distance Matrix in TSPCostCalculator
-		TSPCostCalculator.setMatrix(instance.getDistanceMatrix());
-		TSPCostCalculator costCalc = new TSPCostCalculator();
-
 		long startTime=System.currentTimeMillis();
 		for(int i=0; i<instance.getN(); i++){
 			s.add(i);
 		}
 		while((System.currentTimeMillis()-startTime)/1_000<=max_cpu){	
 			Collections.shuffle(s,rnd);
-
-			s = myAlgorithm(s);
-
 			//set the objective function of the solution
-			s.setOF(costCalc.calcOF(s));
+			s.setOF(TSPCostCalculator.calcOF(instance.getDistanceMatrix(), s));
 			System.out.println(s);
 			if(best==null)
 				best=s.clone();
 			else if(s.getOF()<best.getOF())
 				best=s.clone();
-			calculationCounter++;
 		}
-		System.out.println("Number of Calculation :"+calculationCounter);
 		//return the solution
 		return best;
-	}
-
-
-	static public Solution myAlgorithm(Solution solution){
-		int i, j;
-		boolean notBestSol = true;
-		Solution testedSol;
-		TSPCostCalculator costCalc = new TSPCostCalculator();
-
-		while(notBestSol)
-		{
-			notBestSol = false;
-
-			for(i = 0; i < solution.size(); i++)
-				for(j = i + 1; j < solution.size(); j++)	//Look for best solution
-				{
-					testedSol = solution.clone();
-					testedSol.swap(i, j);
-					testedSol.setOF(costCalc.calcOF(testedSol));
-					if(testedSol.getOF() < solution.getOF())
-					{
-						solution = testedSol;
-						notBestSol = true;
-					}
-					
-					/*if(costCalc.interestingSwap(solution, i, j))
-					{
-						solution.swap(i, j);
-						solution.setOF(costCalc.calcOF(solution));
-						notBestSol = true;
-					}*/
-				}
-		}
-
-		return solution;
 	}
 
 }

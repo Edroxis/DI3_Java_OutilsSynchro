@@ -38,7 +38,7 @@ public class Launcher {
 		Solution s=algorithm.run(config);
 		
 		//report solution
-		System.out.println("-----------------BEST-----------------\n"+s);
+		System.out.println(s);
 	}
 
 }
