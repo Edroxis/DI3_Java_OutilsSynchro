@@ -59,13 +59,24 @@ public class TSPCostCalculator{
 	}
 	
 	public static double diffPartialCostCalcSwap(Solution sol, int i, int j){
+		if(i==0 && j==sol.size()-1)
+		{
+			int tmp = j;
+			j = i;
+			i = tmp;
+		}
+		
 		int pI = i-1, sI = i+1, pJ = j-1, sJ = j+1;
 		double partialCost = 0;
 		
 		if(pI == -1)
 			pI = sol.size()-1;
+		if(pJ == -1)
+			pJ = sol.size()-1;
 		if(sJ == sol.size())
 			sJ = 0;
+		if(sI == sol.size())
+			sI = 0;
 		
 		partialCost += getDist(sol.get(pI),sol.get(i));
 		if(pI != j && sI != j){

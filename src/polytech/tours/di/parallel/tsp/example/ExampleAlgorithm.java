@@ -89,6 +89,16 @@ public class ExampleAlgorithm implements Algorithm {
 			best = bestSwap.getSol();
 			nbTested++;
 			
+			/*int first = 0;
+			int last = 28;
+			System.out.println("avant: "+s.getOF());
+			double diff = TSPCostCalculator.diffPartialCostCalcSwap(s, first, last);
+			System.out.println("calculated Diff: " + diff);
+			System.out.println("estimated cost: " + (s.getOF()-diff));
+			s.swap(first, last);
+			s.setOF(costCalc.calcOF(s));
+			System.out.println("après: "+ s.getOF());*/
+			
 			System.out.println(best);
 			if (best == null)
 				best = s.clone();
