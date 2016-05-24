@@ -77,7 +77,7 @@ public class ExampleAlgorithm implements Algorithm {
 
 			bestSwap.initIsModified(true);
 			while(bestSwap.isModified())//TODO timeout
-			{
+			{//TODO add local best
 				//System.out.println("try swap");
 				ExecutorService executor = Executors.newFixedThreadPool(nbThreads);
 				bestSwap.initIsModified();
