@@ -48,23 +48,44 @@ public class TSPCostCalculator{
 		return calc();
 	}
 
-	public boolean interestingSwap(Solution s, int i, int j){
-		double partialCostDiff = 0;
-		int downI = i-1, upI = i+1, downJ = j-1, upJ = j+1;
+	public double interestingSwap(Solution sol, int i, int j){
+		if(i==0 && j==sol.size()-1)
+		{
+			int tmp = j;
+			j = i;
+			i = tmp;
+		}
+		
+		int pI = i-1, sI = i+1, pJ = j-1, sJ = j+1;
+		double partialCost = 0;
+		
+		if(pI == -1)
+			pI = sol.size()-1;
+		if(pJ == -1)
+			pJ = sol.size()-1;
+		if(sJ == sol.size())
+			sJ = 0;
+		if(sI == sol.size())
+			sI = 0;
+		
+		partialCost += getDist(sol.get(pI),sol.get(i));
+		if(pI != j && sI != j){
+			partialCost += getDist(sol.get(i), sol.get(sI));
+			partialCost += getDist(sol.get(pJ), sol.get(j));
+			
+			partialCost -= getDist(sol.get(j), sol.get(sI)); 
+			partialCost -= getDist(sol.get(pJ), sol.get(i));
+		}
+		partialCost += getDist(sol.get(j), sol.get(sJ));
+		
+		partialCost -= getDist(sol.get(pI),sol.get(j));
+		partialCost -= getDist(sol.get(i), sol.get(sJ));
+		
+		return partialCost;
+	}
 
-		if(downI<0)
-			downI = s.size()-1;
-
-		if(upJ == s.size())
-			upJ = 0;
-
-		if(j == i+1)
-			partialCostDiff = distMatrix[s.get(downI)][s.get(i)] + distMatrix[s.get(j)][s.get(upJ)] - (distMatrix[s.get(downI)][s.get(j)] + distMatrix[s.get(i)][s.get(upJ)]);
-		else
-			partialCostDiff = distMatrix[s.get(downI)][s.get(i)] + distMatrix[s.get(i)][s.get(upI)] + distMatrix[s.get(downJ)][s.get(j)] + distMatrix[s.get(j)][s.get(upJ)] -
-				( distMatrix[s.get(downI)][s.get(j)] + distMatrix[s.get(j)][s.get(upI)] + distMatrix[s.get(downJ)][s.get(i)] + distMatrix[s.get(i)][s.get(upJ)]);
-
-		return  partialCostDiff < 0;
+	private double getDist(int i, int j) {
+		return distMatrix[i][j];
 	}
 
 	/**

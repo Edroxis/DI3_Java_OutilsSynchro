@@ -32,7 +32,7 @@ public Solution run(Properties config) {
 		Solution s=new Solution();
 		Solution best=null;
 		//set nb of threads
-		int nbThreads = 64;
+		int nbThreads = 8;
 		
 		int calculationCounter = 0;
 		
@@ -72,6 +72,7 @@ public Solution run(Properties config) {
 			{
 				if(loopSol.getOF() < best.getOF())
 					best=loopSol;
+				System.out.println(loopSol);
 				threadList.remove(loopSol);
 			}
 		}

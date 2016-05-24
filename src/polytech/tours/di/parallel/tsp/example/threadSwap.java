@@ -57,21 +57,21 @@ public class threadSwap implements Callable<Solution> {
 			for(i = 0; i < solution.size(); i++)
 				for(j = i + 1; j < solution.size(); j++)	//Look for best solution
 				{
-					testedSol = solution.clone();
+					/*testedSol = solution.clone();
 					testedSol.swap(i, j);
 					testedSol.setOF(costCalc.calcOF(testedSol));
 					if(testedSol.getOF() < solution.getOF())
 					{
 						solution = testedSol;
 						notBestSol = true;
-					}
+					}*/
 					
-					/*if(costCalc.interestingSwap(solution, i, j))
+					if(costCalc.interestingSwap(solution, i, j)>0)
 					{
 						solution.swap(i, j);
 						solution.setOF(costCalc.calcOF(solution));
 						notBestSol = true;
-					}*/
+					}
 					//TODO swap à la fin
 				}
 		}
