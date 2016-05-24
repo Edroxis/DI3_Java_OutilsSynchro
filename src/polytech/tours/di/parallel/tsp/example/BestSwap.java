@@ -16,13 +16,20 @@ public class BestSwap {
 
 	public synchronized void checkBetterSolution(Solution sol) {
 		if (sol.getOF() < solution.getOF()) {
+
+			//System.out.println("Current best:"+solution);
+			//System.out.println("New best:"+sol);
 			solution = sol;
 			isModified = true;
+			
 		}
 	}
 
 	public void initIsModified() {
-		isModified = false;
+		initIsModified(false);
+	}
+	public void initIsModified(boolean status) {
+		isModified = status;
 	}
 	
 	public boolean isModified(){

@@ -58,28 +58,39 @@ public class ExampleAlgorithm implements Algorithm {
 		// Declaration task list
 		Runnable[] tasks = new Runnable[instance.getN()];
 		
-		ExecutorService executor = Executors.newFixedThreadPool(nbThreads);
+		
 
 		for (int i = 0; i < instance.getN(); i++) {
 			s.add(i);
 		}
+		int run= 0;
+		
 		while ((System.currentTimeMillis() - startTime) / 1_000 <= max_cpu) {
+			++run;
 			Collections.shuffle(s, rnd);
 			// set the objective function of the solution
 			s.setOF(costCalc.calcOF(s));
+			//System.out.println("-->"+s);
 			
 			if(bestSwap == null)
 				bestSwap = new BestSwap(s, System.currentTimeMillis()+max_cpu*1000);
 
-			while(bestSwap.isModified())
+			bestSwap.initIsModified(true);
+			while(bestSwap.isModified())//TODO timeout
 			{
+				//System.out.println("try swap");
+				ExecutorService executor = Executors.newFixedThreadPool(nbThreads);
 				bestSwap.initIsModified();
 				for(int i = 0; i < s.size()-1; i++)
 				{
 					tasks[i] = new FindBestSwap(bestSwap, s.clone(), i);
+				}
+				for(int i = 0; i < s.size()-1; i++)
+				{
 					executor.submit(tasks[i]);
 				}
 				try {
+					executor.shutdown();
 					executor.awaitTermination(10, TimeUnit.SECONDS);
 				} catch (InterruptedException e) {
 					e.printStackTrace();

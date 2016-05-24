@@ -36,8 +36,9 @@ public class FindBestSwap implements Runnable {
 		if (MISexist) {
 			sol.swap(startingIteration, mostInterestingSwap);
 			sol.setOF(sol.getOF() - MIScost);
+			best.checkBetterSolution(sol);
 		}
-		best.checkBetterSolution(sol);
+		
 	}
 
 }
