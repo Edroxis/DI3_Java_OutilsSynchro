@@ -37,7 +37,7 @@ public class concurentSearchAlgo implements Algorithm {
 		Solution s=new Solution();
 		Solution best=null;
 		//set nb of threads
-		int nbThreads = 64;
+		int nbThreads = 8;
 		
 		int calculationCounter = 0;
 		
@@ -52,7 +52,7 @@ public class concurentSearchAlgo implements Algorithm {
 			ArrayList<Future<Solution>> futureSolList = new ArrayList<Future<Solution>>();
 			ArrayList<threadSwap> threadList = new ArrayList<threadSwap>();
 			ArrayList<Solution> solList = new ArrayList<Solution>();
-			ExecutorService execute = Executors.newSingleThreadExecutor();
+			ExecutorService execute = Executors.newFixedThreadPool(nbThreads);
 			
 			for(int i = 0; i<nbThreads; i++)
 			{

@@ -50,10 +50,11 @@ public class threadSwap2 implements Runnable{
 						solution = testedSol;
 						notBestSol = true;
 					}*/
-					if(costCalc.interestingSwap(solution, i, j)>0)
+					double diff = costCalc.interestingSwap(solution, i, j);
+					if(diff>0)
 					{
 						solution.swap(i, j);
-						solution.setOF(costCalc.calcOF(solution));
+						solution.setOF(solution.getOF() - diff);
 						notBestSol = true;
 					}
 					//TODO swap à la fin

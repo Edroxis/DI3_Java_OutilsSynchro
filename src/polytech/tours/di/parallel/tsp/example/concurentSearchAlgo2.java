@@ -45,7 +45,7 @@ public Solution run(Properties config) {
 		}
 		while((System.currentTimeMillis()-startTime)/1_000<=max_cpu){
 			CopyOnWriteArrayList<threadSwap2> threadList = new CopyOnWriteArrayList<threadSwap2>();
-			ArrayList<Solution> solList = new ArrayList<Solution>();
+			CopyOnWriteArrayList<Solution> solList = new CopyOnWriteArrayList<Solution>();
 			
 			for(int i = 0; i<nbThreads && solList.size()<=nbThreads; i++)
 			{
@@ -73,7 +73,7 @@ public Solution run(Properties config) {
 				if(loopSol.getOF() < best.getOF())
 					best=loopSol;
 				System.out.println(loopSol);
-				threadList.remove(loopSol);
+				solList.remove(loopSol);
 			}
 		}
 		System.out.println("Number of Calculation :"+calculationCounter);
