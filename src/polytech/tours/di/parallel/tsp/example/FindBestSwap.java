@@ -31,6 +31,8 @@ public class FindBestSwap implements Runnable {
 				MIScost = tempCost;
 				mostInterestingSwap = i;
 			}
+			if(System.currentTimeMillis() > best.getTimeout())
+				break;
 		}
 
 		if (MISexist) {
@@ -38,7 +40,7 @@ public class FindBestSwap implements Runnable {
 			sol.setOF(sol.getOF() - MIScost);
 			best.checkBetterSolution(sol);
 		}
-		
+		//Thread.currentThread().interrupt();
 	}
 
 }

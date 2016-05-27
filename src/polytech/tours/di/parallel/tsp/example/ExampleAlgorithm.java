@@ -53,7 +53,7 @@ public class ExampleAlgorithm implements Algorithm {
 		TSPCostCalculator costCalc = new TSPCostCalculator(instance);
 		
 		// Set bestSwap Object
-		BestSwap bestSwap = null;
+		BestSwap bestestSwap = null, localBestSwap = null;
 		
 		// Declaration task list
 		Runnable[] tasks = new Runnable[instance.getN()];
@@ -63,58 +63,43 @@ public class ExampleAlgorithm implements Algorithm {
 		for (int i = 0; i < instance.getN(); i++) {
 			s.add(i);
 		}
-		int run= 0;
 		
 		while ((System.currentTimeMillis() - startTime) / 1_000 <= max_cpu) {
-			++run;
 			Collections.shuffle(s, rnd);
 			// set the objective function of the solution
 			s.setOF(costCalc.calcOF(s));
 			//System.out.println("-->"+s);
 			
-			if(bestSwap == null)
-				bestSwap = new BestSwap(s, System.currentTimeMillis()+max_cpu*1000);
-
-			bestSwap.initIsModified(true);
-			while(bestSwap.isModified())//TODO timeout
-			{//TODO add local best
-				//System.out.println("try swap");
+			if(bestestSwap == null)
+				bestestSwap = new BestSwap(s, System.currentTimeMillis()+max_cpu*1000);
+			
+			localBestSwap = new BestSwap(s, System.currentTimeMillis()+max_cpu*1000);
+			while(localBestSwap.isModified())
+			{
 				ExecutorService executor = Executors.newFixedThreadPool(nbThreads);
-				bestSwap.initIsModified();
+				localBestSwap.initIsModified();
 				for(int i = 0; i < s.size()-1; i++)
 				{
-					tasks[i] = new FindBestSwap(bestSwap, s.clone(), i);
+					tasks[i] = new FindBestSwap(localBestSwap, s.clone(), i);
 				}
 				for(int i = 0; i < s.size()-1; i++)
 				{
 					executor.submit(tasks[i]);
 				}
 				try {
-					executor.shutdown();
-					executor.awaitTermination(10, TimeUnit.SECONDS);
+					//System.out.println("localBest : "+ localBestSwap.getSol());
+					executor.awaitTermination(startTime - System.currentTimeMillis()+max_cpu*1000, TimeUnit.MILLISECONDS);
+					//executor.shutdown();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 			}
 			
-			best = bestSwap.getSol();
+			bestestSwap.checkBetterSolution(localBestSwap.getSol());
 			nbTested++;
 			
-			/*int first = 0;
-			int last = 28;
-			System.out.println("avant: "+s.getOF());
-			double diff = TSPCostCalculator.diffPartialCostCalcSwap(s, first, last);
-			System.out.println("calculated Diff: " + diff);
-			System.out.println("estimated cost: " + (s.getOF()-diff));
-			s.swap(first, last);
-			s.setOF(costCalc.calcOF(s));
-			System.out.println("après: "+ s.getOF());*/
-			
-			System.out.println(best);
-			if (best == null)
-				best = s.clone();
-			else if (s.getOF() < best.getOF())
-				best = s.clone();
+			System.out.println(localBestSwap.getSol());
+			best = bestestSwap.getSol();
 		}
 		// return the solution
 

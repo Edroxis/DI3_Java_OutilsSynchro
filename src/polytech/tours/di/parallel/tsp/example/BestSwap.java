@@ -16,7 +16,6 @@ public class BestSwap {
 
 	public synchronized void checkBetterSolution(Solution sol) {
 		if (sol.getOF() < solution.getOF()) {
-
 			//System.out.println("Current best:"+solution);
 			//System.out.println("New best:"+sol);
 			solution = sol;
