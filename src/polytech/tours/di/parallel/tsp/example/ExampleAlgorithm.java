@@ -88,8 +88,9 @@ public class ExampleAlgorithm implements Algorithm {
 				}
 				try {
 					//System.out.println("localBest : "+ localBestSwap.getSol());
-					executor.awaitTermination(startTime - System.currentTimeMillis()+max_cpu*1000, TimeUnit.MILLISECONDS);
-					//executor.shutdown();
+					//executor.awaitTermination(startTime - System.currentTimeMillis()+max_cpu*1000, TimeUnit.MILLISECONDS);
+					executor.awaitTermination(10, TimeUnit.MILLISECONDS);	//Forcer l'arrêt au bout de 10ms
+					executor.shutdown();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -103,7 +104,7 @@ public class ExampleAlgorithm implements Algorithm {
 		}
 		// return the solution
 
-		System.out.println("================BEST==================\n");
+		System.out.println("================BEST==================");
 		System.out.println("Number of tested solutions: " + nbTested);
 		return best;
 	}

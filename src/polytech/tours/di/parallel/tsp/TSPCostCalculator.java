@@ -17,8 +17,14 @@ public class TSPCostCalculator{
 		distMatrix=instance.getDistanceMatrix();
 	}
 	
-	TSPCostCalculator(double[][] matrix){
+	public TSPCostCalculator(double[][] matrix){
 		distMatrix=matrix;
+	}
+	
+	public TSPCostCalculator(){}
+
+	public static void setMatrix(double[][] distanceMatrix) {
+		distMatrix = distanceMatrix;
 	}
 	
 	/**
@@ -41,6 +47,11 @@ public class TSPCostCalculator{
 		solution = s;
 		return calc();
 	}
+
+	private static double getDist(int i, int j) {
+		return distMatrix[i][j];
+	}
+
 	/**
 	 * internal implementation of the calculator
 	 * @return the cost of a TSP solution
@@ -52,10 +63,6 @@ public class TSPCostCalculator{
 		}
 		cost=cost+distMatrix[solution.get(solution.size()-1)][solution.get(0)];
 		return cost;
-	}
-	
-	public static double getDist(int i, int j){
-		return distMatrix[i][j];
 	}
 	
 	public static double diffPartialCostCalcSwap(Solution sol, int i, int j){
