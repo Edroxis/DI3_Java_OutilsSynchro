@@ -57,21 +57,22 @@ public class concurentSearchAlgo implements Algorithm {
 			for(int i = 0; i<nbThreads; i++)
 			{
 				Collections.shuffle(s,rnd);
-				threadList.add(new threadSwap(s.clone()));
-				futureSolList.add(execute.submit(threadList.get(i)));	
+				threadList.add(new threadSwap(s.clone()));	//set threads
+				futureSolList.add(execute.submit(threadList.get(i)));	//start n threads in parallel, each one looking for 1 solution
 			}
 			
 			for(int i = 0; i<nbThreads; i++)
 			{
 				Solution temp = null;
 				try {
-					temp = futureSolList.get(i).get(max_cpu - (System.currentTimeMillis()-startTime)/1_000, TimeUnit.SECONDS);
+					temp = futureSolList.get(i).get(max_cpu - (System.currentTimeMillis()-startTime)/1_000, TimeUnit.SECONDS);	//get solution found
 				} catch (InterruptedException | ExecutionException e) {
 					e.printStackTrace();
 				}catch (TimeoutException e) {
 					System.out.println("Not enough time to finish this one!");
 				}
-				if(temp!=null)
+				
+				if(temp!=null)	//put the solution on an ArrayList
 				{
 					solList.add(temp);
 					System.out.println(temp);
@@ -82,7 +83,7 @@ public class concurentSearchAlgo implements Algorithm {
 			if(best == null)
 				best=solList.get(0);
 			
-			for(Solution sol : solList)
+			for(Solution sol : solList)	//Compare solutions with the best one
 				if(sol.getOF() < best.getOF())
 					best=sol;
 			

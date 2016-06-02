@@ -50,14 +50,14 @@ public Solution run(Properties config) {
 			for(int i = 0; i<nbThreads && solList.size()<=nbThreads; i++)
 			{
 				Collections.shuffle(s,rnd);
-				threadSwap2 th = new threadSwap2(s.clone(), startTime+max_cpu*1000);
-				new Thread(th).start();;
+				threadSwap2 th = new threadSwap2(s.clone(), startTime+max_cpu*1000);	//Initialize threads
+				new Thread(th).start();	// Start Threads
 				threadList.add(th);
 			}
 			
 			for(threadSwap2 th : threadList)
 			{
-				if(th.isFinished())
+				if(th.isFinished())	//If calculation is finished, get solution, remove thread
 				{
 					solList.add(th.getSol());
 					threadList.remove(th);
@@ -68,7 +68,7 @@ public Solution run(Properties config) {
 			if(best == null && !solList.isEmpty())
 				best=solList.get(0);
 			
-			for(Solution loopSol : solList)
+			for(Solution loopSol : solList)	//Compare solutions
 			{
 				if(loopSol.getOF() < best.getOF())
 					best=loopSol;

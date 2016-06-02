@@ -68,35 +68,35 @@ public class ExampleAlgorithm implements Algorithm {
 			Collections.shuffle(s, rnd);
 			// set the objective function of the solution
 			s.setOF(costCalc.calcOF(s));
-			//System.out.println("-->"+s);
 			
+			//Initialize best Swap of all
 			if(bestestSwap == null)
-				bestestSwap = new BestSwap(s, System.currentTimeMillis()+max_cpu*1000);
+				bestestSwap = new BestSwap(s.clone(), System.currentTimeMillis()+max_cpu*1000);
 			
-			localBestSwap = new BestSwap(s, System.currentTimeMillis()+max_cpu*1000);
+			//Initialize best swap of localSwap
+			localBestSwap = new BestSwap(s.clone(), System.currentTimeMillis()+max_cpu*1000);
 			while(localBestSwap.isModified())
 			{
-				ExecutorService executor = Executors.newFixedThreadPool(nbThreads);
+				ExecutorService executor = Executors.newFixedThreadPool(nbThreads);	//Start threads
 				localBestSwap.initIsModified();
 				for(int i = 0; i < s.size()-1; i++)
 				{
-					tasks[i] = new FindBestSwap(localBestSwap, s.clone(), i);
+					tasks[i] = new FindBestSwap(localBestSwap, s.clone(), i);	//Initialize tasks
 				}
 				for(int i = 0; i < s.size()-1; i++)
 				{
-					executor.submit(tasks[i]);
+					executor.submit(tasks[i]);	//Start task calculations
 				}
 				try {
-					//System.out.println("localBest : "+ localBestSwap.getSol());
 					//executor.awaitTermination(startTime - System.currentTimeMillis()+max_cpu*1000, TimeUnit.MILLISECONDS);
-					executor.awaitTermination(10, TimeUnit.MILLISECONDS);	//Forcer l'arrêt au bout de 10ms
+					executor.awaitTermination(10, TimeUnit.MILLISECONDS);	//Force stop after 10ms
 					executor.shutdown();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 			}
 			
-			bestestSwap.checkBetterSolution(localBestSwap.getSol());
+			bestestSwap.checkBetterSolution(localBestSwap.getSol());	//check for the best solution
 			nbTested++;
 			
 			System.out.println(localBestSwap.getSol());

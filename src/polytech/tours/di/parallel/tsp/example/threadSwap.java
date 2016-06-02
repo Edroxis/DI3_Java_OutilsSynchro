@@ -27,7 +27,7 @@ public class threadSwap implements Callable<Solution> {
 		TSPCostCalculator costCalc = new TSPCostCalculator();
 		solution.setOF(costCalc.calcOF(solution));
 
-		while(notBestSol)
+		while(notBestSol)	//while not in local minimum
 		{
 			notBestSol = false;
 			
@@ -35,7 +35,7 @@ public class threadSwap implements Callable<Solution> {
 				for(j = i + 1; j < solution.size(); j++)	//Look for best solution
 				{
 					double diff = TSPCostCalculator.diffPartialCostCalcSwap(solution, i, j);
-					if(diff>0)
+					if(diff>0)	//if better solution, swap and recalculate OF
 					{
 						solution.swap(i, j);
 						solution.setOF(solution.getOF() - diff);
@@ -43,7 +43,6 @@ public class threadSwap implements Callable<Solution> {
 					}
 				}
 		}
-		//System.out.println(solution);
 		return solution;
 	}
 

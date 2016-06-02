@@ -49,7 +49,7 @@ public class threadSwap2 implements Runnable{
 						notBestSol = true;
 					}
 					//TODO swap à la fin
-					if(System.currentTimeMillis() > timeout)
+					if(System.currentTimeMillis() > timeout)	//Timeout reached
 						return solution;
 				}
 		}
