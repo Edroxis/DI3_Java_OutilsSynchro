@@ -17,7 +17,7 @@ public class BestSwap {
 	public synchronized void checkBetterSolution(Solution sol) {
 		if (sol.getOF() < solution.getOF()) {	// if param solution is better than previous one
 			solution = sol;
-			isModified = true;
+			//isModified = true;
 		}
 	}
 

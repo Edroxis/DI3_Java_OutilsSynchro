@@ -56,5 +56,38 @@ public class threadSwap2 implements Runnable{
 		//System.out.println(solution);
 		return solution;
 	}
+	
+	/*int i, j;	//code avec swap à la fin
+	boolean notBestSol = true;
+	TSPCostCalculator costCalc = new TSPCostCalculator();
+	solution.setOF(costCalc.calcOF(solution));
+	int MISi=0, MISj=0;
+	double MISdiff = -1;
+
+	while(notBestSol)
+	{
+		notBestSol = false;
+		MISdiff = -1;
+		for(i = 0; i < solution.size(); i++)
+			for(j = i + 1; j < solution.size(); j++)	//Look for best solution
+			{
+				double diff = TSPCostCalculator.diffPartialCostCalcSwap(solution, i, j);
+				if(diff > 0 && diff > MISdiff)
+				{
+					MISi = i;
+					MISj = j;
+					MISdiff = diff;
+				}
+				if(System.currentTimeMillis() > timeout)	//Timeout reached
+					return solution;
+			}
+		if(MISdiff > 0){
+			solution.swap(MISi, MISj);
+			solution.setOF(solution.getOF() - MISdiff);
+			notBestSol = true;
+		}
+	}
+	//System.out.println(solution);
+	return solution;*/
 
 }
